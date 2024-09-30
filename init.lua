@@ -6,4 +6,3 @@ for _, colorscheme in ipairs(colorschemes) do
         break
     end
 end
-

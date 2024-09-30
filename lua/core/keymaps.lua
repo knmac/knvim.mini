@@ -52,6 +52,12 @@ vim.keymap.set("t", "<A-j>", [[<C-\><C-n><C-w>j]], opts)
 vim.keymap.set("t", "<A-k>", [[<C-\><C-n><C-w>k]], opts)
 vim.keymap.set("t", "<A-l>", [[<C-\><C-n><C-w>l]], opts)
 
+-- Buffer navigation
+vim.keymap.set("n", "<C-A-h>", "<cmd>bprevious<CR>", opts)
+vim.keymap.set("n", "<C-A-l>", "<cmd>bnext<CR>", opts)
+vim.keymap.set("n", "<C-A-l>", "<cmd>ls<CR>", opts)
+vim.keymap.set("n", "<C-A-k>", "<cmd>bdelete<CR>", opts)
+
 -- Toggle conceal level between 0 and 2
 -- vim.keymap.set("n", "<leader>cc",
 --     function()
@@ -107,7 +113,7 @@ vim.keymap.set("n", "<F20>", "<cmd>tabclose<CR>", opts)
 -- <F9>: Remove trailing spaces
 vim.keymap.set("n", "<F9>", [[<cmd>%s/\s\+$//e<CR>]], opts)
 -- <S-F9>: Clear registers
-vim.keymap.set("n", "<F21>", "<cmd>ClearRegisters<CR>", opts)
+vim.keymap.set("n", "<F21>", "<cmd>ClearAllRegisters<CR>", opts)
 
 -- <F10>: Run make file
 vim.keymap.set("n", "<F10>", "<cmd>make<CR>", opts)
