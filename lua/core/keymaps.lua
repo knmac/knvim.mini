@@ -55,7 +55,7 @@ vim.keymap.set("t", "<A-l>", [[<C-\><C-n><C-w>l]], opts)
 -- Buffer navigation
 vim.keymap.set("n", "<C-A-h>", "<cmd>bprevious<CR>", opts)
 vim.keymap.set("n", "<C-A-l>", "<cmd>bnext<CR>", opts)
-vim.keymap.set("n", "<C-A-j>", "<cmd>ls<CR>", opts)
+vim.keymap.set("n", "<C-A-j>", ":ls<CR>:b<Space>", opts)
 vim.keymap.set("n", "<C-A-k>", "<cmd>bdelete<CR>", opts)
 
 -- Toggle conceal level between 0 and 2
