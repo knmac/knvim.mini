@@ -1,12 +1,12 @@
----------------------------------------------------------------------------------------------------
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- Keymaps configuration file: keymaps of neovim and plugins.
----------------------------------------------------------------------------------------------------
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 local opts = { noremap = true, silent = true }
 
 
----------------------------------------------------------------------------------------------------
+-- ────────────────────────────────────────────────────────────────────────────────────────────────
 -- Basic key bindings
----------------------------------------------------------------------------------------------------
+-- ────────────────────────────────────────────────────────────────────────────────────────────────
 -- Maintain visual mode after shifting
 vim.keymap.set("v", ">", ">gv", opts)
 vim.keymap.set("v", "<", "<gv", opts)
@@ -44,7 +44,7 @@ vim.keymap.set("n", "<A-S-k>", "<C-w>k<C-w>x", opts)
 vim.keymap.set("n", "<A-S-l>", "<C-w>l<C-w>x", opts)
 
 -- Navigation from terminal
-vim.keymap.set("n", "<C-\\>", "<cmd>vsplit | terminal<CR>a", opts)
+vim.keymap.set("n", "<C-\\>", "<cmd>split | terminal<CR>a", opts)
 vim.keymap.set("t", "<C-\\>", "<cmd>q<CR>", opts)
 vim.keymap.set("t", "<C-esc>", [[<C-\><C-n>]], opts)
 vim.keymap.set("t", "<A-h>", [[<C-\><C-n><C-w>h]], opts)
@@ -67,21 +67,21 @@ vim.keymap.set("n", "<C-A-k>", "<cmd>bdelete<CR>", opts)
 -- )
 
 
----------------------------------------------------------------------------------------------------
+-- ────────────────────────────────────────────────────────────────────────────────────────────────
 -- Function key bindings
----------------------------------------------------------------------------------------------------
+-- ────────────────────────────────────────────────────────────────────────────────────────────────
 -- <F1>: Show help
 vim.keymap.set("n", "<F1>", "<cmd>help<CR>", opts)
 -- <S-F1>: Show keymaps
 vim.keymap.set("n", "<F13>", "<cmd>map<CR>", opts)
 
 -- <F2>: Rename (check lspconfig)
--- vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+vim.keymap.set("n", "<F2>", function() vim.lsp.buf.rename() end, opts)
 -- <S-F2>: Show task list
 -- vim.keymap.set("n", "<F14>", "<cmd>TodoTelescope<CR>", opts)
 
 -- <F3>: Show file tree explorer
--- vim.keymap.set("n", "<F3>", "<cmd>Lexplore<CR>", opts)
+vim.keymap.set("n", "<F3>", "<cmd>Lexplore<CR>", opts)
 -- <F3>: Show file tree at the current file
 -- vim.keymap.set("n", "<F15>", "<cmd>Neotree reveal<CR>", opts)
 
@@ -96,24 +96,24 @@ vim.keymap.set("n", "<F5>", "<cmd>ls<CR>", opts)
 vim.keymap.set("n", "<F17>", "<cmd>tabs<CR>", opts)
 
 -- <F6>: Prev buffer
-vim.keymap.set("n", "<F6>", "<cmd>bprevious<CR>", opts)
+vim.keymap.set("n", "<F6>", "<cmd>BufferPrevious<CR>", opts)
 -- <S-F6>: Prev tab
 vim.keymap.set("n", "<F18>", "<cmd>tabprevious<CR>", opts)
 
 -- <F7>: Next buffer
-vim.keymap.set("n", "<F7>", "<cmd>bnext<CR>", opts)
+vim.keymap.set("n", "<F7>", "<cmd>BufferNext<CR>", opts)
 -- <S-F7>: Next tab
 vim.keymap.set("n", "<F19>", "<cmd>tabnext<CR>", opts)
 
 -- <F8>: Close current buffer and switch to previous buffer
-vim.keymap.set("n", "<F8>", "<cmd>bdelete<CR>", opts)
+vim.keymap.set("n", "<F8>", "<cmd>BufferClose<CR>", opts)
 -- <S-F8>: Close current tab
 vim.keymap.set("n", "<F20>", "<cmd>tabclose<CR>", opts)
 
 -- <F9>: Remove trailing spaces
 vim.keymap.set("n", "<F9>", [[<cmd>%s/\s\+$//e<CR>]], opts)
--- <S-F9>: Clear registers
-vim.keymap.set("n", "<F21>", "<cmd>ClearAllRegisters<CR>", opts)
+-- <S-F9>: Format smart single ‘’ and double “” quotes
+vim.keymap.set("n", "<F21>", [[:%s/[‘’]/'/g | %s/[“”]/"/g<CR>]], opts)
 
 -- <F10>: Run make file
 vim.keymap.set("n", "<F10>", "<cmd>make<CR>", opts)
