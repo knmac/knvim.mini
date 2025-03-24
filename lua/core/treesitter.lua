@@ -1,14 +1,14 @@
 local ts_parser_root = os.getenv("HOME") .. "/.local/share/knvim/lazy/nvim-treesitter/parser/"
 
 local language_map = {
-    python = { fname = "python.so", ext = { "py" } },
-    cpp = { fname = "cpp.so", ext = { "cpp" } }
+    python = { fname = "python.so", ft = { "py" } },
+    cpp = { fname = "cpp.so", ft = { "cpp" } }
 }
 
 if io.open(ts_parser_root) ~= nil then
     for lang, value in pairs(language_map) do
         vim.treesitter.language.add(lang, { path = ts_parser_root .. value["fname"] })
-        vim.treesitter.language.register(lang, value["ext"])
+        vim.treesitter.language.register(lang, value["ft"])
     end
 
     -- vim.treesitter.language.add("python", { path = ts_parser_root .. "python.so" })
