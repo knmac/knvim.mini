@@ -20,7 +20,7 @@ vim.g.netrw_localcopydircmd = "cp -r"
 
 -- vim.keymap.set("n", "<leader>dd", ":Lexplore %:p:h<CR>")
 -- vim.keymap.set("n", "<leader>da", ":Lexplore<CR>")
-vim.keymap.set("n", "<leader>t", ":Lexplore<CR>")
+vim.keymap.set("n", "<leader>e", ":Lexplore<CR>")
 
 -- Better keymaps for Netrw
 local netrw_mapping = function()
@@ -29,7 +29,7 @@ local netrw_mapping = function()
     -- Close Netrw window
     -- vim.keymap.set("n", "<leader>dd", ":Lexplore<CR>", opts)
     -- vim.keymap.set("n", "<leader>da", ":Lexplore<CR>", opts)
-    vim.keymap.set("n", "<leader>t", ":Lexplore<CR>", opts)
+    vim.keymap.set("n", "<leader>e", ":Lexplore<CR>", opts)
     vim.keymap.set("n", "q", ":Lexplore<CR>", { buffer = true, nowait = true })
 
     -- Go to file and close Netrw window
