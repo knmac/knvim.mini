@@ -58,6 +58,9 @@ vim.keymap.set("n", "<C-A-l>", "<cmd>bnext<CR>", opts)
 vim.keymap.set("n", "<C-A-j>", ":ls<CR>:b<Space>", opts)
 vim.keymap.set("n", "<C-A-k>", "<cmd>bdelete<CR>", opts)
 
+-- Open file in a new split
+vim.keymap.set("n", "gF", "<C-w>vgf", opts)
+
 -- Toggle conceal level between 0 and 2
 -- vim.keymap.set("n", "<leader>cc",
 --     function()
