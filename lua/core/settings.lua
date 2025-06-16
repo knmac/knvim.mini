@@ -86,12 +86,12 @@ vim.opt.splitright = true -- vertical split to the right
 vim.opt.splitbelow = true -- orizontal split to the bottom
 
 -- Folding (refer to lua/plugins/ui/fold.lua)
-vim.opt.foldenable = true   -- enable folding
-vim.opt.foldlevel = 99      -- set fold level
-vim.opt.foldlevelstart = 99 -- open most folds by default
-vim.opt.foldnestmax = 10    -- 10 nested fold max
--- vim.opt.foldmethod = "indent" -- set folding method by looking at indent
-vim.opt.foldmethod = "expr"
+vim.opt.foldenable = true     -- enable folding
+vim.opt.foldlevel = 99        -- set fold level
+vim.opt.foldlevelstart = 99   -- open most folds by default
+vim.opt.foldnestmax = 10      -- 10 nested fold max
+vim.opt.foldmethod = "indent" -- set folding method by looking at indent
+-- vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
 function _G.custom_fold_text()
@@ -101,13 +101,17 @@ function _G.custom_fold_text()
     return line_start .. " ... " .. line_end .. " [" .. num_lines .. " lines] "
 end
 
--- Fold column options
-vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
-vim.o.foldcolumn = "1" -- '0' is not bad | Number of different visible folding levels
-
--- Set foldtext to call the Lua function
 vim.opt.foldtext = "v:lua.custom_fold_text()"
-vim.opt.fillchars:append({ fold = "─" })
+
+-- Fold column options
+vim.o.foldcolumn = "1"
+vim.opt.fillchars:append({
+    fold = "─", -- filling 'foldtext'
+    foldopen = "", -- mark the beginning of a fold
+    foldclose = "", -- show a closed fold
+    foldsep = " ", -- open fold middle marker
+    -- eob = " ", -- empty lines at the end of a buffer
+})
 
 
 -- ────────────────────────────────────────────────────────────────────────────────────────────────
