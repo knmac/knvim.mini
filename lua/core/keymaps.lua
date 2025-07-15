@@ -90,6 +90,7 @@ vim.keymap.set("n", "<F3>", "<cmd>Lexplore<CR>", opts)
 
 -- <F4>: Show tags of current buffer
 -- vim.keymap.set("n", "<F4>", "<cmd>Outline!<CR>", opts)
+vim.keymap.set("n", "<F4>", "<cmd>InspectTree<CR>", opts)
 -- <S-F4>: Show diagnostics
 -- vim.keymap.set("n", "<F16>", "<cmd>Telescope diagnostics<CR>", opts)
 
@@ -116,7 +117,7 @@ vim.keymap.set("n", "<F20>", "<cmd>tabclose<CR>", opts)
 -- <F9>: Remove trailing spaces
 vim.keymap.set("n", "<F9>", [[<cmd>%s/\s\+$//e<CR>]], opts)
 -- <S-F9>: Format smart single ‘’ and double “” quotes
-vim.keymap.set("n", "<F21>", [[:%s/[‘’]/'/g | %s/[“”]/"/g<CR>]], opts)
+vim.keymap.set("n", "<F21>", function() NormalizeQuotes() end, opts)
 
 -- <F10>: Run make file
 vim.keymap.set("n", "<F10>", "<cmd>make<CR>", opts)
