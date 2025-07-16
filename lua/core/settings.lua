@@ -57,8 +57,7 @@ vim.opt.encoding = "utf-8"             -- use Unicode
 vim.opt.spelllang = "en_us"            -- set spell language as US english
 vim.opt.spellfile = vim.fn.stdpath("data") ..
     "/spelling/en.utf-8.add"           -- file to store custom spelling
-
--- vim.cmd [[ set path+=** ]]         -- provide tab-completion for file-related tasks, e.g., gf
+vim.opt.path:append("**")              -- provide tab-completion for file-related tasks, e.g., gf
 
 
 -- ────────────────────────────────────────────────────────────────────────────────────────────────
@@ -91,8 +90,8 @@ vim.opt.foldlevel = 99        -- set fold level
 vim.opt.foldlevelstart = 99   -- open most folds by default
 vim.opt.foldnestmax = 10      -- 10 nested fold max
 vim.opt.foldmethod = "indent" -- set folding method by looking at indent
--- vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldmethod = "expr"
+-- vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
 function _G.custom_fold_text()
     local line_start = vim.fn.getline(vim.v.foldstart)
