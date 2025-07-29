@@ -17,6 +17,7 @@ if not vim.uv.fs_stat(catppuccin_path) then
     end
     print("Restart neovim to load colorscheme")
 end
+-- vim.pack.add("https://github.com/catppuccin/nvim.git")
 
 -- Set colorscheme
 local colorschemes = { "catppuccin-macchiato", "sorbet", "habamax", }
@@ -25,3 +26,10 @@ for _, colorscheme in ipairs(colorschemes) do
         break
     end
 end
+
+-- Use undercurl, if supported by terminal
+vim.cmd.highlight("DiagnosticUnderlineOk gui=undercurl")
+vim.cmd.highlight("DiagnosticUnderlineHint gui=undercurl")
+vim.cmd.highlight("DiagnosticUnderlineInfo gui=undercurl")
+vim.cmd.highlight("DiagnosticUnderlineWarn gui=undercurl")
+vim.cmd.highlight("DiagnosticUnderlineError gui=undercurl")
