@@ -6,15 +6,14 @@ local default_opts = { noremap = true, silent = true }
 -- ────────────────────────────────────────────────────────────────────────────────────────────────
 -- Auto change the configs
 -- ────────────────────────────────────────────────────────────────────────────────────────────────
-local user_cfgs_group = vim.api.nvim_create_augroup("user_cfgs", { clear = false })
-
 -- Only show cursorline in active windows
+local cursorline_group = vim.api.nvim_create_augroup("user_cfgs", { clear = false })
 vim.api.nvim_create_autocmd("WinEnter", {
-    group = user_cfgs_group,
+    group = cursorline_group,
     callback = function() vim.opt_local.cursorline = true end,
 })
 vim.api.nvim_create_autocmd("WinLeave", {
-    group = user_cfgs_group,
+    group = cursorline_group,
     callback = function() vim.opt_local.cursorline = false end,
 })
 
@@ -26,17 +25,17 @@ vim.api.nvim_create_autocmd("WinLeave", {
 
 -- Use tab instead of space for make files
 vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("use_tab_in_makefile_group", { clear = false }),
     desc = "Use tab instead of space for make files",
     pattern = { "make" },
-    group = user_cfgs_group,
     callback = function() vim.opt_local.expandtab = false end,
 })
 
 -- 2 spaces for these file types
 vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("two_space_group", { clear = false }),
     desc = "2 spaces for these files types",
     pattern = { "xml", "yaml", "json", "html", "css", "typescript", "scala", "markdown" },
-    group = user_cfgs_group,
     callback = function()
         vim.opt_local.tabstop = 2
         vim.opt_local.softtabstop = 2
@@ -46,9 +45,9 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Go down/up soft-wrapped lines instead of "real" lines
 vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("softwrap_navigation_group", { clear = false }),
     desc = "Overwrite 'line' naviagation with 'wrapped-line' navigation",
     pattern = { "md", "markdown", "tex", "norg", },
-    group = user_cfgs_group,
     callback = function()
         vim.keymap.set({ "n", "v" }, "j", "gj", default_opts)
         vim.keymap.set({ "n", "v" }, "k", "gk", default_opts)
@@ -59,16 +58,16 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Auto check spelling for these file types
 vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("spellcheck_group", { clear = false }),
     desc = "Auto check spelling",
     pattern = { "md", "markdown", "tex", "norg", },
-    group = user_cfgs_group,
     callback = function()
         vim.opt_local.spell = true
     end,
 })
 
 -- Use relative number only for normal and visual modes
-local linenumber_augroup = vim.api.nvim_create_augroup("linenumber", { clear = true })
+local linenumber_augroup = vim.api.nvim_create_augroup("linenumber_group", { clear = false })
 vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertLeave" }, {
     group = linenumber_augroup,
     callback = function()
@@ -85,6 +84,31 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter" }, {
         end
     end,
 })
+
+-- Highlight yank
+vim.api.nvim_create_autocmd("TextYankPost", {
+    group = vim.api.nvim_create_augroup("highlight_yank_group", { clear = false }),
+    desc = "Highlight selection on yank",
+    pattern = "*",
+    callback = function()
+        vim.hl.on_yank({ timeout = 200, visual = true })
+    end,
+})
+
+-- Auto resize splits when the terminal's window is resized
+vim.api.nvim_create_autocmd("VimResized", {
+    group = vim.api.nvim_create_augroup("autoresize_group", { clear = false }),
+    desc = "Auto resize splits when terminal's window is resized",
+    command = "wincmd =",
+})
+
+-- No auto continue comments on new line
+-- vim.api.nvim_create_autocmd("FileType", {
+--     group = vim.api.nvim_create_augroup("no_auto_comment", {}),
+--     callback = function()
+--         vim.opt_local.formatoptions:remove({ "c", "r", "o" })
+--     end,
+-- })
 
 
 -- ────────────────────────────────────────────────────────────────────────────────────────────────
@@ -159,6 +183,8 @@ vim.keymap.set("n", "<leader>-", function() FillLine("─") end,
     { desc = "Fill line with `─` characters", noremap = true, silent = true })
 vim.keymap.set("n", "<leader>=", function() FillLine("━") end,
     { desc = "Fill line with `━` characters", noremap = true, silent = true })
+vim.api.nvim_create_user_command("KnvimFillLine", function(opts) FillLine(opts.args) end,
+    { nargs = 1, desc = "Fill line with specified character" })
 
 -- vim.cmd [[
 -- function! FillLine( str )
@@ -180,15 +206,18 @@ vim.keymap.set("n", "<leader>=", function() FillLine("━") end,
 -- vim.keymap.set("n", "<leader>=", ':call FillLine("=")<CR>', default_opts)
 
 
--- Normalize quotes
-function NormalizeQuotes()
+-- Quick format: remove trailing spaces, Format smart single ‘’ and double “” quotes
+function QuickFormat()
     local mode = vim.fn.mode()
     if mode == "v" or mode == "V" then
-        vim.cmd([['<,'>s/[‘’]/'/g]])
-        vim.cmd([['<,'>s/[“”]/"/g]])
+        pcall(function() vim.cmd([['<,'>s/\s\+$//e]]) end)
+        pcall(function() vim.cmd([['<,'>s/[‘’]/'/ge]]) end)
+        pcall(function() vim.cmd([['<,'>s/[“”]/"/ge]]) end)
     else
-        vim.cmd([[%s/[‘’]/'/g]])
-        vim.cmd([[%s/[“”]/"/g]])
+        pcall(function() vim.cmd([[%s/\s\+$//e]]) end)
+        pcall(function() vim.cmd([[%s/[‘’]/'/ge]]) end)
+        pcall(function() vim.cmd([[%s/[“”]/"/ge]]) end)
     end
 end
-vim.api.nvim_create_user_command("KnvimNormalizeQuotes", NormalizeQuotes, { range = true })
+
+vim.api.nvim_create_user_command("KnvimQuickFormat", QuickFormat, { range = true })
