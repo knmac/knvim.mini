@@ -1,2 +1,2 @@
-- `release/`: latest stable release
-- `unsupported/`: build for older glibc
+- `release/`: latest stable release [link](https://github.com/neovim/neovim/releases)
+- `unsupported/`: build for older glibc [link](https://github.com/neovim/neovim-releases/releases)
