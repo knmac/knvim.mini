@@ -17,10 +17,10 @@ require("core")
 --     end
 --     print("Restart neovim to load colorscheme")
 -- end
-vim.pack.add({"https://github.com/catppuccin/nvim.git"})
+-- vim.pack.add({"https://github.com/catppuccin/nvim.git"})
 
 -- Set colorscheme
-local colorschemes = { "catppuccin-macchiato", "sorbet", "habamax", }
+local colorschemes = { "catppuccin", "sorbet", "habamax", }
 for _, colorscheme in ipairs(colorschemes) do
     if pcall(vim.cmd.colorscheme, colorscheme) then
         break
