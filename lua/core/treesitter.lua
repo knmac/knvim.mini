@@ -1,4 +1,4 @@
-local ts_parser_root = os.getenv("HOME") .. "/.local/share/knvim/lazy/nvim-treesitter/parser/"
+local ts_parser_root = os.getenv("HOME") .. "/.local/share/knvim/site/parser/"
 
 local language_map = {
     python = { fname = "python.so", ft = { "py" } },
