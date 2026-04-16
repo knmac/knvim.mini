@@ -89,6 +89,7 @@ vim.opt.showmatch = true      -- highlight matching parenthesis
 vim.opt.smartcase = true      -- ignore lowercase for the whole pattern
 vim.opt.linebreak = true      -- wrap on word boundary
 vim.opt.signcolumn = "yes"    -- always show the sign column to not shift the text
+vim.opt.winborder = "rounded" -- default border style of floating windows
 
 -- Marking special characters
 vim.opt.list = true -- list mode to mark special characters
@@ -104,7 +105,7 @@ vim.opt.foldlevel = 99        -- set fold level
 vim.opt.foldlevelstart = 99   -- open most folds by default
 vim.opt.foldnestmax = 10      -- 10 nested fold max
 vim.opt.foldmethod = "indent" -- set folding method by looking at indent
-vim.opt.foldmethod = "expr"
+-- vim.opt.foldmethod = "expr"
 -- vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
 function _G.custom_fold_text()
