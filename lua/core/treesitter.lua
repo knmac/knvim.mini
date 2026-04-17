@@ -2,8 +2,6 @@
 require("core.pkg").ensure_rocks({
     "tree-sitter-python",
     "tree-sitter-cpp",
-    "tree-sitter-lua",
-    "tree-sitter-markdown",
 })
 
 vim.api.nvim_create_autocmd("FileType", {
