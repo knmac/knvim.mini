@@ -1,5 +1,9 @@
 -- local ts_parser_root = os.getenv("HOME") .. "/.local/share/knvim/site/parser/"
-require("core.pkg").ensure_rocks({
+require("core.deps").ensure({
+    { name = "tree-sitter-cli", type = "npm", pkg = "tree-sitter-cli" },
+})
+
+require("core.deps").ensure_rocks({
     "tree-sitter-python",
     "tree-sitter-cpp",
 })

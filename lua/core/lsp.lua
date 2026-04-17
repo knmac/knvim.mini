@@ -1,9 +1,16 @@
-require("core.pkg").ensure({
-    { name = "pyright", type = "npm", pkg = "pyright" },
+require("core.deps").ensure({
+    { name = "basedpyright", type = "npm", pkg = "basedpyright" },
     { name = "lua-language-server", type = "github", pkg = "LuaLS/lua-language-server@3.13.6:lua-language-server" },
 })
 
-vim.lsp.enable({ "lua_ls", "pyright" })
+vim.lsp.enable({ "lua_ls", "basedpyright" })
+
+-- Suppress basedpyright jupyter notebook parse errors
+local _notify = vim.notify
+vim.notify = function(msg, ...)
+    if msg and msg:match("failed to parse jupyter notebook") then return end
+    _notify(msg, ...)
+end
 
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(ev)
