@@ -96,9 +96,9 @@ local netrw_mapping = function()
     -- vim.keymap.set("n", "P", "<C-w>z", opts)
 end
 
-vim.api.nvim_create_autocmd("filetype", {
+vim.api.nvim_create_autocmd("FileType", {
     pattern = "netrw",
-    group = "user_cmds",
-    desc = "Netrw keyvim.keymap.setings",
-    callback = netrw_mapping
+    group = vim.api.nvim_create_augroup("user_cmds", { clear = false }),
+    desc = "Netrw keymappings",
+    callback = netrw_mapping,
 })

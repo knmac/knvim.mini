@@ -6,10 +6,16 @@ require("core.deps").ensure({
 vim.lsp.enable({ "lua_ls", "basedpyright" })
 
 -- Suppress basedpyright jupyter notebook parse errors
-local _notify = vim.notify
-vim.notify = function(msg, ...)
-    if msg and msg:match("failed to parse jupyter notebook") then return end
-    _notify(msg, ...)
+local orig_show_message = vim.lsp.handlers["window/showMessage"]
+vim.lsp.handlers["window/showMessage"] = function(err, result, ctx, config)
+    if result and result.message and result.message:match("failed to parse jupyter notebook") then
+        return
+    end
+    if orig_show_message then
+        orig_show_message(err, result, ctx, config)
+    else
+        vim.notify(result.message, ({ "ERROR", "WARN", "INFO", "DEBUG" })[result.type])
+    end
 end
 
 vim.api.nvim_create_autocmd("LspAttach", {

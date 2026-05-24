@@ -47,12 +47,13 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("softwrap_navigation_group", { clear = false }),
     desc = "Overwrite 'line' naviagation with 'wrapped-line' navigation",
-    pattern = { "md", "markdown", "tex", "norg", },
-    callback = function()
-        vim.keymap.set({ "n", "v" }, "j", "gj", default_opts)
-        vim.keymap.set({ "n", "v" }, "k", "gk", default_opts)
-        vim.keymap.set({ "n", "v" }, "0", "g0", default_opts)
-        vim.keymap.set({ "n", "v" }, "$", "g$", default_opts)
+    pattern = { "markdown", "tex", "norg", },
+    callback = function(ev)
+        local buf_opts = { noremap = true, silent = true, buffer = ev.buf }
+        vim.keymap.set({ "n", "v" }, "j", "gj", buf_opts)
+        vim.keymap.set({ "n", "v" }, "k", "gk", buf_opts)
+        vim.keymap.set({ "n", "v" }, "0", "g0", buf_opts)
+        vim.keymap.set({ "n", "v" }, "$", "g$", buf_opts)
     end,
 })
 
