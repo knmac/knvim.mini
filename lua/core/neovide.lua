@@ -23,4 +23,10 @@ if vim.g.neovide then
     vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+', { noremap = true, silent = true})
     vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+', { noremap = true, silent = true})
     vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+', { noremap = true, silent = true})
+
+    -- Frosted pop-up windows
+    vim.opt.winblend = 100
+    vim.opt.pumblend = 100
+    vim.g.neovide_floating_blur_amount_x = 30
+    vim.g.neovide_floating_blur_amount_y = 30
 end
