@@ -127,11 +127,16 @@ local installers = {
 --- removes both in unlock_access(); a lockfile left behind means the process was
 --- killed before it could unlock, and every later run then fails ("requires
 --- exclusive write access", or "File exists" for the download cache). No live
---- process holds them, so they are safe to drop. The cache under
---- stdpath("cache")/../luarocks is shared with any other luarocks invocation, so
---- a lock stranded there blocks manifest fetches for every rock.
+--- process holds them, so they are safe to drop. The download cache is shared
+--- with any other luarocks invocation, so a lock stranded there blocks manifest
+--- fetches for every rock.
 local function clear_stale_locks()
-    local roots = { rocks_root, vim.env.HOME .. "/.cache/luarocks" }
+    -- Mirror how luarocks itself resolves its download cache (core/cfg.lua:
+    -- XDG_CACHE_HOME or ~/.cache, then "/luarocks"). Hardcoding ~/.cache would
+    -- sweep a directory luarocks never uses whenever XDG_CACHE_HOME is set,
+    -- leaving the real lock in place -- the exact failure this prevents.
+    local cache_home = vim.env.XDG_CACHE_HOME or (vim.env.HOME .. "/.cache")
+    local roots = { rocks_root, cache_home .. "/luarocks" }
     for _, root in ipairs(roots) do
         for _, name in ipairs({ "/lockfile.lfs", "/*/lockfile.lfs" }) do
             for _, f in ipairs(vim.fn.glob(root .. name, true, true)) do
