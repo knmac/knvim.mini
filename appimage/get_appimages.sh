@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Fallback version if latest detection fails
-version="v0.12.2"
+version="v0.12.4"
 
 # Detect architecture
 arch=$(uname -m)
