@@ -25,15 +25,32 @@ local installers = {
         local os_name = uname.sysname == "Darwin" and "darwin" or "linux"
         local arch = uname.machine == "x86_64" and "x64" or "arm64"
         local owner_repo, tag, bin_name = pkg:match("^(.+)@(.+):(.+)$")
+        -- Asset names include the version, e.g. lua-language-server-3.13.6-darwin-arm64.tar.gz
         local url = string.format(
-            "https://github.com/%s/releases/download/%s/%s-%s-%s.tar.gz",
-            owner_repo, tag, bin_name, os_name, arch
+            "https://github.com/%s/releases/download/%s/%s-%s-%s-%s.tar.gz",
+            owner_repo, tag, bin_name, tag, os_name, arch
         )
-        vim.fn.system({ "curl", "-L", "-o", dir .. "/pkg.tar.gz", url })
+        vim.fn.system({ "curl", "-fL", "-o", dir .. "/pkg.tar.gz", url })
+        if vim.v.shell_error ~= 0 then
+            -- Leave no half-installed directory behind: ensure() skips any dir that
+            -- exists, so a failed download would otherwise never be retried.
+            vim.fn.delete(dir, "rf")
+            vim.notify(("Failed to download %s from %s"):format(bin_name, url), vim.log.levels.ERROR)
+            return
+        end
         vim.fn.system({ "tar", "xzf", dir .. "/pkg.tar.gz", "-C", dir })
         os.remove(dir .. "/pkg.tar.gz")
         if vim.fn.filereadable(dir .. "/bin/" .. bin_name) == 1 then
-            vim.uv.fs_symlink(dir .. "/bin/" .. bin_name, M.bin_dir .. "/" .. bin_name)
+            -- Use an exec wrapper rather than a symlink: some servers (lua-language-server)
+            -- resolve their runtime files relative to the executable's own path, which a
+            -- symlink from bin/ would break.
+            local wrapper = M.bin_dir .. "/" .. bin_name
+            local f = io.open(wrapper, "w")
+            if f then
+                f:write(('#!/usr/bin/env bash\nexec "%s/bin/%s" "$@"\n'):format(dir, bin_name))
+                f:close()
+                vim.fn.setfperm(wrapper, "rwxr-xr-x")
+            end
         end
     end,
     --- Install a luarock into the local rocks tree.
